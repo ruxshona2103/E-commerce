@@ -20,7 +20,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         category = request.query_params.get('category', None)
-        if category:
+        if category is not None:
             self.queryset = self.queryset.filter(category=category)
         return super().list(request, *args, **kwargs)
 
@@ -33,6 +33,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             'product':serializer.data,
             'related_products': related_serializer.data
         })
+
+
     @action(detail=False, methods=['get'])
     def top_rated(self, request):
         top_products = Product.objects.annotate(avg_rating = models.Avg('reviews__rating')).order_by('-avg_rating')[:2]

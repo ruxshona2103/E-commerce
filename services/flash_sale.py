@@ -2,7 +2,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 from products.models import Product, ProductViewHistory, FlashSale
-
 from rest_framework import generics, serializers, status
 
 
