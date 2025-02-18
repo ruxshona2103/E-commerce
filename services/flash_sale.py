@@ -3,6 +3,13 @@ from rest_framework.response import Response
 from datetime import datetime, timedelta
 from products.models import Product, ProductViewHistory, FlashSale
 from rest_framework import generics, serializers, status
+from django_filters import rest_framework as django_filters
+from rest_framework.pagination import PageNumberPagination
+
+from products.filters import FlashSaleFilter
+
+class CustomPagination(PageNumberPagination):
+    page_size = 2
 
 
 class FlashSaleListCreateView(generics.ListCreateAPIView):
@@ -14,6 +21,11 @@ class FlashSaleListCreateView(generics.ListCreateAPIView):
             fields = ('id', 'product', 'discount_percentage', 'start_time', 'end_time')
 
     serializer_class = FlashSaleSerializer
+    pagination_class = CustomPagination
+
+    filter_backends = (django_filters.DjangoFilterBackend , )
+    filterset_class = FlashSaleFilter
+
 
 @api_view(['GET'])
 def check_flash_sale(request, product_id):
