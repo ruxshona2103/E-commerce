@@ -10,6 +10,11 @@ from .models import Product, Review, Category
 from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 from .filters import ProductFilter
 
+from rest_framework.permissions import IsAuthenticated
+
+
+
+
 
 
 class CustomPagination(PageNumberPagination):
@@ -25,6 +30,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     pagination_class = CustomPagination
 
+    permission_classes = [IsAuthenticated]
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by('-id')
     serializer_class = ProductSerializer
@@ -34,6 +41,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = (django_filters.DjangoFilterBackend, filters.SearchFilter)
     filterset_class = ProductFilter
     search_fields = ['name', 'description']
+
+    permission_classes = [IsAuthenticated]
 
 
 
